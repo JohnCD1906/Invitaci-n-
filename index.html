@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Una invitación para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --dusk-1:#241036;      /* plum alto del cielo */
+    --dusk-2:#5b2a5e;      /* malva */
+    --amber:#e9823f;       /* ámbar */
+    --peach:#f7c08a;       /* durazno del horizonte */
+    --cream:#fdf0df;       /* texto claro */
+    --gold:#ffcf8a;        /* acento dorado de la cúpula */
+    --ink:#1a0c24;         /* siluetas */
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:"Figtree",system-ui,sans-serif;
+    color:var(--cream);
+    background:
+      radial-gradient(130% 80% at 50% 108%, var(--peach) 0%, var(--amber) 16%, var(--dusk-2) 48%, var(--dusk-1) 82%);
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* estrellas tenues en lo alto */
+  .stars{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  .stars span{
+    position:absolute;width:2px;height:2px;border-radius:50%;
+    background:var(--cream);opacity:.0;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.08}50%{opacity:.7}}
+
+  /* resplandor del sol en el horizonte */
+  .glow{
+    position:fixed;left:50%;bottom:-6vh;width:120vw;height:60vh;
+    transform:translateX(-50%);
+    background:radial-gradient(50% 60% at 50% 100%, rgba(255,214,150,.55), rgba(255,170,90,.15) 45%, transparent 70%);
+    pointer-events:none;
+    animation:rise 2.2s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateX(-50%) translateY(18vh)}to{opacity:1;transform:translateX(-50%)}}
+
+  /* silueta de la ciudad + Bellas Artes */
+  .skyline{
+    position:fixed;left:0;bottom:0;width:100%;height:auto;
+    z-index:0;pointer-events:none;filter:drop-shadow(0 -6px 18px rgba(0,0,0,.25));
+  }
+
+  main{
+    position:relative;z-index:2;
+    width:min(560px,92vw);
+    margin:auto;
+    padding:clamp(28px,7vw,52px) clamp(22px,6vw,44px) clamp(40px,10vw,60px);
+    text-align:center;
+  }
+
+  .salutation{
+    font-family:"Fraunces",serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(2.9rem,12vw,4.6rem);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    color:var(--cream);
+    text-shadow:0 2px 24px rgba(40,10,40,.45);
+  }
+  .salutation .name{
+    display:block;
+    color:var(--gold);
+    font-style:normal;
+    font-weight:500;
+  }
+
+  .message{
+    margin:clamp(20px,5vw,28px) auto 0;
+    max-width:34ch;
+    font-size:clamp(1.02rem,3.9vw,1.18rem);
+    line-height:1.65;
+    color:#fbe6cf;
+  }
+
+  .card{
+    margin:clamp(26px,6vw,34px) auto 0;
+    display:grid;
+    gap:2px;
+    width:100%;
+    max-width:360px;
+    background:rgba(28,12,36,.42);
+    border:1px solid rgba(255,207,138,.28);
+    border-radius:20px;
+    overflow:hidden;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .row{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 20px;
+    text-align:left;
+  }
+  .row + .row{border-top:1px solid rgba(255,255,255,.08)}
+  .row svg{flex:0 0 auto;width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.6}
+  .row .label{font-size:.78rem;color:#e7c9a6;opacity:.85}
+  .row .value{font-size:1.06rem;font-weight:500;color:var(--cream)}
+  .row .value small{display:block;font-weight:400;font-size:.82rem;color:#e7c9a6;opacity:.85}
+
+  .yes{
+    margin-top:clamp(26px,6vw,34px);
+    appearance:none;border:none;cursor:pointer;
+    font-family:"Figtree",sans-serif;font-weight:600;font-size:1.06rem;
+    color:#3a1606;
+    background:linear-gradient(180deg,#ffd79a,#f0a24e);
+    padding:15px 34px;border-radius:999px;
+    box-shadow:0 10px 30px rgba(233,130,63,.4);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .yes:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(233,130,63,.5)}
+  .yes:active{transform:translateY(0)}
+  .yes:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+
+  .confirmed{
+    margin-top:clamp(24px,6vw,32px);
+    font-family:"Fraunces",serif;font-style:italic;
+    font-size:clamp(1.2rem,5vw,1.5rem);
+    color:var(--gold);
+    opacity:0;transform:translateY(8px);
+    transition:opacity .5s ease,transform .5s ease;
+    min-height:1.6em;
+  }
+  .confirmed.show{opacity:1;transform:none}
+
+  /* entrada suave */
+  .reveal{opacity:0;transform:translateY(14px);animation:up .9s cubic-bezier(.2,.7,.2,1) both}
+  .d1{animation-delay:.25s}.d2{animation-delay:.55s}.d3{animation-delay:.85s}.d4{animation-delay:1.1s}
+  @keyframes up{to{opacity:1;transform:none}}
+
+  /* corazones que suben al confirmar */
+  .heart{position:fixed;bottom:-30px;font-size:22px;pointer-events:none;z-index:5;animation:float 2.6s ease-in forwards}
+  @keyframes float{to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal,.glow,.stars span{animation:none!important;opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <!-- Silueta: edificios + Palacio de Bellas Artes -->
+  <svg class="skyline" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <g fill="var(--ink)">
+      <!-- edificios izquierda -->
+      <rect x="0"   y="210" width="90"  height="110"/>
+      <rect x="95"  y="170" width="60"  height="150"/>
+      <rect x="160" y="230" width="80"  height="90"/>
+      <rect x="245" y="195" width="55"  height="125"/>
+      <rect x="305" y="235" width="70"  height="85"/>
+      <!-- edificios derecha -->
+      <rect x="820" y="230" width="70"  height="90"/>
+      <rect x="895" y="188" width="58"  height="132"/>
+      <rect x="958" y="232" width="86"  height="88"/>
+      <rect x="1050" y="168" width="60" height="152"/>
+      <rect x="1115" y="214" width="85" height="106"/>
+
+      <!-- Palacio de Bellas Artes (centro) -->
+      <!-- base ancha -->
+      <rect x="420" y="250" width="360" height="70"/>
+      <!-- cuerpo -->
+      <rect x="470" y="205" width="260" height="60"/>
+      <!-- cupulitas laterales -->
+      <path d="M470 212 q35 -48 70 0 Z"/>
+      <path d="M660 212 q35 -48 70 0 Z"/>
+      <!-- tambor central -->
+      <rect x="548" y="150" width="104" height="70"/>
+      <!-- cúpula principal -->
+      <path d="M548 156 q52 -92 104 0 Z"/>
+      <!-- linternilla -->
+      <rect x="588" y="110" width="24" height="24"/>
+      <path d="M588 112 q12 -22 24 0 Z"/>
+      <!-- figura / remate -->
+      <rect x="597" y="88" width="6" height="22"/>
+      <circle cx="600" cy="84" r="7"/>
+    </g>
+    <!-- brillo dorado sobre la cúpula -->
+    <path d="M548 156 q52 -92 104 0" fill="none" stroke="var(--gold)" stroke-width="2" opacity=".55"/>
+  </svg>
+
+  <main>
+    <h1 class="salutation reveal d1">Hola,<span class="name">bonita</span></h1>
+
+    <p class="message reveal d2">
+      Quiero invitarte a comer en una terraza con la mejor vista de la ciudad.
+      Me haría muy feliz que me acompañaras.
+    </p>
+
+    <div class="card reveal d3">
+      <div class="row">
+        <svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div><span class="value">Terraza 56<small>Ciudad de México</small></span></div>
+      </div>
+      <div class="row">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/></svg>
+        <div><span class="value">Lunes 2 de noviembre<small>2026</small></span></div>
+      </div>
+      <div class="row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <div><span class="value">2:00 pm</span></div>
+      </div>
+    </div>
+
+    <button class="yes reveal d4" id="yesBtn">Sí, acepto 💛</button>
+    <p class="confirmed" id="confirmed" role="status" aria-live="polite"></p>
+  </main>
+
+<script>
+  // estrellas
+  (function(){
+    const box=document.getElementById('stars');
+    for(let i=0;i<46;i++){
+      const s=document.createElement('span');
+      s.style.left=Math.random()*100+'%';
+      s.style.top=Math.random()*55+'%';
+      s.style.animationDelay=(Math.random()*4)+'s';
+      box.appendChild(s);
+    }
+  })();
+
+  // confirmar con corazones
+  const btn=document.getElementById('yesBtn');
+  const msg=document.getElementById('confirmed');
+  let done=false;
+  btn.addEventListener('click',()=>{
+    if(!done){
+      done=true;
+      msg.textContent='¡Nos vemos el 2 de noviembre! 🌇';
+      msg.classList.add('show');
+      btn.textContent='¡Qué emoción! 🥂';
+    }
+    for(let i=0;i<14;i++){
+      const h=document.createElement('div');
+      h.className='heart';
+      h.textContent=['💛','🧡','✨','🌇','💫'][i%5];
+      h.style.left=(10+Math.random()*80)+'%';
+      h.style.fontSize=(16+Math.random()*18)+'px';
+      h.style.animationDelay=(Math.random()*.5)+'s';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),3200);
+    }
+  });
+</script>
+</body>
+</html>
